@@ -18,6 +18,7 @@ import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import javax.sql.DataSource;
 
@@ -48,7 +49,7 @@ public class CorrelationJobConfiguration {
         String sql = this.getCorrelationQuery(MYSQL_DATETIMERANGE.LAST_6_MONTHS);
         reader.setSql(sql);
 
-        reader.setRowMapper(new CorrelationMapper());
+        reader.setRowMapper(new BeanPropertyRowMapper<Correlation>(Correlation.class));
 
         return reader;
     }
