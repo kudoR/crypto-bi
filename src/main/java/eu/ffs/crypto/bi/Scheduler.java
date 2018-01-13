@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class Scheduler {
 
-//    @Autowired
-//    DailyDifferenceJobConfiguration dailyDifferenceJobConfiguration;
+    @Autowired
+    DailyDifferenceJobConfiguration dailyDifferenceJobConfiguration;
 
     @Autowired
     CorrelationJobConfiguration correlationJobConfiguration;
@@ -27,9 +27,9 @@ public class Scheduler {
 
     @Scheduled(fixedRateString = "60000")
     public void perform() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
-//        dailyDifferenceJobConfiguration.perform();
+        dailyDifferenceJobConfiguration.perform();
         correlationJobConfiguration.perform();
-     //   marketCapJobConfiguration.perform();
+        marketCapJobConfiguration.perform();
     }
 
 }
