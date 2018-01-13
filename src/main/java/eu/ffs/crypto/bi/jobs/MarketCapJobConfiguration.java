@@ -48,7 +48,7 @@ public class MarketCapJobConfiguration {
         String sql = this.getQuery();
         reader.setSql(sql);
 
-        reader.setRowMapper(new BeanPropertyRowMapper<MarketCapHistoricalItem>(MarketCapHistoricalItem.class));
+        reader.setRowMapper(new BeanPropertyRowMapper<>(MarketCapHistoricalItem.class));
 
         return reader;
     }
