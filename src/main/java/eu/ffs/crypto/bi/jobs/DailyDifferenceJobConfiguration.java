@@ -60,11 +60,11 @@ public class DailyDifferenceJobConfiguration {
                 "act_data.id," +
                 "act_data.close," +
                 "act_data.close-day_before.close as dailyChangeAbs," +
-                "((act_data.close-day_before.close)/day_before.close)*100 as dailyChangePercent" +
+                "((act_data.close-day_before.close)/day_before.close)*100 as dailyChangePercent " +
                 "from cmchistorical_item act_data " +
                 "join cmchistorical_item day_before on act_data.id=day_before.id " +
                 "where act_data.id = day_before.id " +
-                "and act_data.date > ('2016-01-01')" +
+                "and act_data.date > ('2016-01-01') " +
 //                "and act_data.date > (" + sql_delta_selection + ")\n" +
                 "and act_data.date = DATE_ADD(day_before.date, INTERVAL 1 day)";
         reader.setSql(sql);
