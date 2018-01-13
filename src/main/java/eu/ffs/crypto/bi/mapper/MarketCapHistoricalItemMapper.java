@@ -23,4 +23,5 @@ public class MarketCapHistoricalItemMapper implements RowMapper<MarketCapHistori
     }
 
 
+
 }

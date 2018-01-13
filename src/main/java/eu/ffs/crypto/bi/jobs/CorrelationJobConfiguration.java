@@ -49,7 +49,9 @@ public class CorrelationJobConfiguration {
         String sql = this.getCorrelationQuery(MYSQL_DATETIMERANGE.LAST_6_MONTHS);
         reader.setSql(sql);
 
-        reader.setRowMapper(new BeanPropertyRowMapper<Correlation>(Correlation.class));
+        BeanPropertyRowMapper<Correlation> correlationBeanPropertyRowMapper = BeanPropertyRowMapper.newInstance(Correlation.class);
+
+        reader.setRowMapper(correlationBeanPropertyRowMapper);
 
         return reader;
     }
