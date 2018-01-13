@@ -54,7 +54,7 @@ public class DailyDifferenceJobConfiguration {
                         "                status = 'COMPLETED'\n" +
                         "                order by e.job_execution_id desc limit 1";
 
-        String sql = "select currentRank, cast(currentRank as signed)-cast(rank_day_before as signed) rankDailyChangeAbs, date, id, close, dailyChangeAbs, dailyChangePercent from (\n" +
+        String sql = "select currentRank, cast(rank_day_before as signed)-cast(currentRank as signed) rankDailyChangeAbs, date, id, close, dailyChangeAbs, dailyChangePercent from (\n" +
                 "select \n" +
                 "ROW_NUMBER() OVER (PARTITION BY act_data.date ORDER BY act_data.market_cap DESC) AS currentRank,\n" +
                 "ROW_NUMBER() OVER (PARTITION BY day_before.date ORDER BY day_before.market_cap DESC) AS rank_day_before,\n" +
