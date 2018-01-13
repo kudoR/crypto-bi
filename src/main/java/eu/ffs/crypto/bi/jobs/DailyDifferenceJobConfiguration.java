@@ -54,21 +54,22 @@ public class DailyDifferenceJobConfiguration {
                         "                status = 'COMPLETED'\n" +
                         "                order by e.job_execution_id desc limit 1";
 
-        String sql = "select " +
-                "ROW_NUMBER() OVER (PARTITION BY act_data.date ORDER BY act_data.market_cap DESC) AS currentRank,"+
-                "act_data.date," +
-                "act_data.id," +
-                "act_data.close," +
-                "act_data.close-day_before.close as dailyChangeAbs," +
-                "((act_data.close-day_before.close)/day_before.close)*100 as dailyChangePercent " +
-                "from cmchistorical_item act_data " +
-                "join cmchistorical_item day_before on act_data.id=day_before.id " +
-                "where act_data.id = day_before.id " +
-                "and act_data.date > ('2016-01-01') " +
-//                "and act_data.date > (" + sql_delta_selection + ")\n" +
-                "and act_data.date = DATE_ADD(day_before.date, INTERVAL 1 day)";
-        reader.setSql(sql);
+        String sql = "select currentRank, cast(currentRank as signed)-cast(rank_day_before as signed) rankDailyChangeAbs, date, id, close, dailyChangeAbs, dailyChangePercent from (\n" +
+                "select \n" +
+                "ROW_NUMBER() OVER (PARTITION BY act_data.date ORDER BY act_data.market_cap DESC) AS currentRank,\n" +
+                "ROW_NUMBER() OVER (PARTITION BY day_before.date ORDER BY day_before.market_cap DESC) AS rank_day_before,\n" +
+                "act_data.date,\n" +
+                "act_data.id,\n" +
+                "act_data.close,\n" +
+                "act_data.close-day_before.close as dailyChangeAbs,\n" +
+                "((act_data.close-day_before.close)/day_before.close)*100 as dailyChangePercent \n" +
+                "from cmchistorical_item act_data \n" +
+                "join cmchistorical_item day_before on act_data.id=day_before.id \n" +
+                "where act_data.id = day_before.id and act_data.date > ('2016-01-01') " +
+                //                "and act_data.date > (" + sql_delta_selection + ")\n" +
+                "and act_data.date = DATE_ADD(day_before.date, INTERVAL 1 day)) a";
 
+        reader.setSql(sql);
         reader.setRowMapper(new DailyDifferenceRowMapper());
 
         return reader;

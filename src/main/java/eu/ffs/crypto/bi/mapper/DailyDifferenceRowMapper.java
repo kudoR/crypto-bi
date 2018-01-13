@@ -18,6 +18,7 @@ public class DailyDifferenceRowMapper implements RowMapper<DailyDifference> {
                 resultSet.getBigDecimal("close"),
                 resultSet.getBigDecimal("dailyChangeAbs"),
                 resultSet.getBigDecimal("dailyChangePercent"),
-                resultSet.getInt("currentRank"),0);
+                resultSet.getInt("currentRank"),
+                resultSet.getInt("rankDailyChangeAbs"));
     }
 }
