@@ -15,15 +15,35 @@ public class DailyDifference {
     BigDecimal close;
     BigDecimal dailyChangeAbs;
     BigDecimal dailyChangePercent;
+    int currentPlace;
+    int dailyChangePlace;
 
     public DailyDifference() {
     }
 
-    public DailyDifference(String id, Date date, BigDecimal close, BigDecimal dailyChangeAbs, BigDecimal dailyChangePercent) {
+    public DailyDifference(String id, Date date, BigDecimal close, BigDecimal dailyChangeAbs, BigDecimal dailyChangePercent, int currentPlace, int dailyChangePlace) {
         this.pk = new DailyDifferencePK(id, date);
         this.close = close;
         this.dailyChangeAbs = dailyChangeAbs;
         this.dailyChangePercent = dailyChangePercent;
+        this.currentPlace = currentPlace;
+        this.dailyChangePlace = dailyChangePlace;
+    }
+
+    public int getCurrentPlace() {
+        return currentPlace;
+    }
+
+    public void setCurrentPlace(int currentPlace) {
+        this.currentPlace = currentPlace;
+    }
+
+    public int getDailyChangePlace() {
+        return dailyChangePlace;
+    }
+
+    public void setDailyChangePlace(int dailyChangePlace) {
+        this.dailyChangePlace = dailyChangePlace;
     }
 
     public BigDecimal getClose() {

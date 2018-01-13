@@ -54,16 +54,17 @@ public class DailyDifferenceJobConfiguration {
                         "                status = 'COMPLETED'\n" +
                         "                order by e.job_execution_id desc limit 1";
 
-        String sql = "select \n" +
-                "act_data.date,\n" +
-                "act_data.id,\n" +
-                "act_data.close,\n" +
-                "act_data.close-day_before.close as dailyChangeAbs,\n" +
-                "((act_data.close-day_before.close)/day_before.close)*100 as dailyChangePercent\n" +
-                "from cmchistorical_item act_data \n" +
-                "join cmchistorical_item day_before on act_data.id=day_before.id \n" +
+        String sql = "select " +
+                "ROW_NUMBER() OVER (PARTITION BY act_data.date ORDER BY act_data.market_cap DESC) AS rank,"+
+                "act_data.date," +
+                "act_data.id," +
+                "act_data.close," +
+                "act_data.close-day_before.close as dailyChangeAbs," +
+                "((act_data.close-day_before.close)/day_before.close)*100 as dailyChangePercent" +
+                "from cmchistorical_item act_data " +
+                "join cmchistorical_item day_before on act_data.id=day_before.id " +
                 "where act_data.id = day_before.id " +
-                "and act_data.date > ('2016-01-01')\n" +
+                "and act_data.date > ('2016-01-01')" +
 //                "and act_data.date > (" + sql_delta_selection + ")\n" +
                 "and act_data.date = DATE_ADD(day_before.date, INTERVAL 1 day)";
         reader.setSql(sql);
