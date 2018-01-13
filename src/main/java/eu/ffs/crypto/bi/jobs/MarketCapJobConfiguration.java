@@ -1,5 +1,6 @@
 package eu.ffs.crypto.bi.jobs;
 
+import eu.ffs.crypto.bi.mapper.MarketCapHistoricalItemMapper;
 import eu.ffs.crypto.bi.persistence.entity.MarketCapHistoricalItem;
 import eu.ffs.crypto.bi.persistence.repo.MarketCapHistoricalItemRepository;
 import org.springframework.batch.core.*;
@@ -48,7 +49,7 @@ public class MarketCapJobConfiguration {
         String sql = this.getQuery();
         reader.setSql(sql);
 
-        reader.setRowMapper(new BeanPropertyRowMapper<>(MarketCapHistoricalItem.class));
+        reader.setRowMapper(new MarketCapHistoricalItemMapper());
 
         return reader;
     }
