@@ -55,7 +55,7 @@ public class DailyDifferenceJobConfiguration {
                         "                order by e.job_execution_id desc limit 1";
 
         String sql = "select " +
-                "ROW_NUMBER() OVER (PARTITION BY act_data.date ORDER BY act_data.market_cap DESC) AS rank,"+
+                "ROW_NUMBER() OVER (PARTITION BY act_data.date ORDER BY act_data.market_cap DESC) AS currentRank,"+
                 "act_data.date," +
                 "act_data.id," +
                 "act_data.close," +
