@@ -1,6 +1,5 @@
 package eu.ffs.crypto.bi.jobs;
 
-import eu.ffs.crypto.bi.mapper.CorrelationMapper;
 import eu.ffs.crypto.bi.persistence.entity.Correlation;
 import eu.ffs.crypto.bi.persistence.repo.CorrelationRepository;
 import org.springframework.batch.core.*;
@@ -42,7 +41,7 @@ public class CorrelationJobConfiguration {
     private CorrelationRepository repository;
 
     @Bean
-    public JdbcCursorItemReader<Correlation> reader() {
+    public JdbcCursorItemReader<Correlation> correlationJobReader() {
         JdbcCursorItemReader<Correlation> reader = new JdbcCursorItemReader<>();
         reader.setDataSource(dataSource);
 
@@ -69,12 +68,12 @@ public class CorrelationJobConfiguration {
     }
 
     @Bean
-    public ItemProcessor<Correlation, Correlation> processor() {
+    public ItemProcessor<Correlation, Correlation> correlationJobProcessor() {
         return o -> o;
     }
 
     @Bean
-    public ItemWriter<Correlation> writer() {
+    public ItemWriter<Correlation> correlationJobWriter() {
         return list -> repository.save(list);
     }
 
@@ -91,9 +90,9 @@ public class CorrelationJobConfiguration {
     public Step correlationJobStep1() {
         return stepBuilderFactory.get("correlationJobStep1")
                 .<Correlation, Correlation>chunk(10)
-                .reader(reader())
-                .processor(processor())
-                .writer(writer())
+                .reader(correlationJobReader())
+                .processor(correlationJobProcessor())
+                .writer(correlationJobWriter())
                 .build();
     }
 

@@ -41,7 +41,7 @@ public class AveragePriceJobConfiguration {
     private AveragePriceJobRepository repository;
 
     @Bean
-    public JdbcCursorItemReader<AveragePrice> reader() {
+    public JdbcCursorItemReader<AveragePrice> averagePriceJobReader() {
         JdbcCursorItemReader<AveragePrice> reader = new JdbcCursorItemReader<>();
         reader.setDataSource(dataSource);
 
@@ -64,12 +64,12 @@ public class AveragePriceJobConfiguration {
     }
 
     @Bean
-    public ItemProcessor<AveragePrice, AveragePrice> processor() {
+    public ItemProcessor<AveragePrice, AveragePrice> averagePriceJobProcessor() {
         return o -> o;
     }
 
     @Bean
-    public ItemWriter<AveragePrice> writer() {
+    public ItemWriter<AveragePrice> averagePriceJobWriter() {
         return list -> repository.save(list);
     }
 
@@ -86,9 +86,9 @@ public class AveragePriceJobConfiguration {
     public Step averagePriceJobStep1() {
         return stepBuilderFactory.get("averagePriceJobStep1")
                 .<AveragePrice, AveragePrice>chunk(10)
-                .reader(reader())
-                .processor(processor())
-                .writer(writer())
+                .reader(averagePriceJobReader())
+                .processor(averagePriceJobProcessor())
+                .writer(averagePriceJobWriter())
                 .build();
     }
 

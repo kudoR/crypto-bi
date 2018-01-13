@@ -41,7 +41,7 @@ public class DailyDifferenceJobConfiguration {
     private DailyDifferenceRepository dailyDifferenceRepository;
 
     @Bean
-    public JdbcCursorItemReader<DailyDifference> reader() {
+    public JdbcCursorItemReader<DailyDifference> dailyDifferenceJobReader() {
         JdbcCursorItemReader<DailyDifference> reader = new JdbcCursorItemReader<>();
         reader.setDataSource(dataSource);
 
@@ -74,12 +74,12 @@ public class DailyDifferenceJobConfiguration {
     }
 
     @Bean
-    public ItemProcessor<DailyDifference,DailyDifference> processor() {
+    public ItemProcessor<DailyDifference,DailyDifference> dailyDifferenceJobProcessor() {
         return o -> o;
     }
 
     @Bean
-    public ItemWriter<DailyDifference> writer() {
+    public ItemWriter<DailyDifference> dailyDifferenceJobWriter() {
         return list -> dailyDifferenceRepository.save(list);
     }
 
@@ -87,18 +87,18 @@ public class DailyDifferenceJobConfiguration {
     public Job dailyDifferenceDataJob() {
         return jobBuilderFactory.get("dailyDifferenceDataJob")
                 .incrementer(new RunIdIncrementer())
-                .flow(step1())
+                .flow(dailyDifferenceJobStep1())
                 .end()
                 .build();
     }
 
     @Bean
-    public Step step1() {
-        return stepBuilderFactory.get("step1")
+    public Step dailyDifferenceJobStep1() {
+        return stepBuilderFactory.get("dailyDifferenceJobStep1")
                 .<DailyDifference, DailyDifference>chunk(10)
-                .reader(reader())
-                .processor(processor())
-                .writer(writer())
+                .reader(dailyDifferenceJobReader())
+                .processor(dailyDifferenceJobProcessor())
+                .writer(dailyDifferenceJobWriter())
                 .build();
     }
 

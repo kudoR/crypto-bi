@@ -18,7 +18,6 @@ import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 import javax.sql.DataSource;
 
@@ -42,7 +41,7 @@ public class MarketCapJobConfiguration {
     private MarketCapHistoricalItemRepository repository;
 
     @Bean
-    public JdbcCursorItemReader<MarketCapHistoricalItem> reader() {
+    public JdbcCursorItemReader<MarketCapHistoricalItem> marketCapJobReader() {
         JdbcCursorItemReader<MarketCapHistoricalItem> reader = new JdbcCursorItemReader<>();
         reader.setDataSource(dataSource);
 
@@ -75,12 +74,12 @@ public class MarketCapJobConfiguration {
     }
 
     @Bean
-    public ItemProcessor<MarketCapHistoricalItem, MarketCapHistoricalItem> processor() {
+    public ItemProcessor<MarketCapHistoricalItem, MarketCapHistoricalItem> marketCapJobProcessor() {
         return o -> o;
     }
 
     @Bean
-    public ItemWriter<MarketCapHistoricalItem> writer() {
+    public ItemWriter<MarketCapHistoricalItem> marketCapJobWriter() {
         return list -> repository.save(list);
     }
 
@@ -97,9 +96,9 @@ public class MarketCapJobConfiguration {
     public Step marketCapJobStep1() {
         return stepBuilderFactory.get("marketCapJobStep1")
                 .<MarketCapHistoricalItem, MarketCapHistoricalItem>chunk(10)
-                .reader(reader())
-                .processor(processor())
-                .writer(writer())
+                .reader(marketCapJobReader())
+                .processor(marketCapJobProcessor())
+                .writer(marketCapJobWriter())
                 .build();
     }
 
