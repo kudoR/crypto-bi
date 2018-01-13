@@ -9,7 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class CryptoBiApplication {
 
 	public static void main(String[] args) {
-		System.out.println("new Version");
 		SpringApplication.run(CryptoBiApplication.class, args);
 	}
 }

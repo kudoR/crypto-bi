@@ -28,8 +28,8 @@ public class Scheduler {
     @Scheduled(fixedRateString = "60000")
     public void perform() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 //        dailyDifferenceJobConfiguration.perform();
-     //   correlationJobConfiguration.perform();
-        marketCapJobConfiguration.perform();
+        correlationJobConfiguration.perform();
+     //   marketCapJobConfiguration.perform();
     }
 
 }
