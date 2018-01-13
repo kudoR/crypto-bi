@@ -1,5 +1,6 @@
 package eu.ffs.crypto.bi.jobs;
 
+import eu.ffs.crypto.bi.mapper.CorrelationMapper;
 import eu.ffs.crypto.bi.persistence.entity.Correlation;
 import eu.ffs.crypto.bi.persistence.repo.CorrelationRepository;
 import org.springframework.batch.core.*;
@@ -48,9 +49,7 @@ public class CorrelationJobConfiguration {
         String sql = this.getCorrelationQuery(MYSQL_DATETIMERANGE.LAST_6_MONTHS);
         reader.setSql(sql);
 
-        BeanPropertyRowMapper<Correlation> correlationBeanPropertyRowMapper = new BeanPropertyRowMapper<Correlation>(Correlation.class);
-
-        reader.setRowMapper(correlationBeanPropertyRowMapper);
+        reader.setRowMapper(new CorrelationMapper());
 
         return reader;
     }
