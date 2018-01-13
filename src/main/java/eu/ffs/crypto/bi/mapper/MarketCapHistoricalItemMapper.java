@@ -21,4 +21,6 @@ public class MarketCapHistoricalItemMapper implements RowMapper<MarketCapHistori
         marketCapHistoricalItem.setPreMonthDiffPercent(resultSet.getBigDecimal(7));
         return marketCapHistoricalItem;
     }
+
+
 }
